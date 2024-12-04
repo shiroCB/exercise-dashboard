@@ -18505,7 +18505,7 @@ class App extends Component {
     return (
       <div>
         <FileUpload set_data={this.set_data}></FileUpload>
-        <div className="parent"></div>
+        <div className="app"></div>
       </div>
     );
   }
