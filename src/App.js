@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import FileUpload from "./FileUpload";
+import Graph1 from "./Graph1";
 
 class App extends Component {
   constructor(props) {
@@ -18505,7 +18506,9 @@ class App extends Component {
     return (
       <div>
         <FileUpload set_data={this.set_data}></FileUpload>
-        <div className="app"></div>
+        <div className="allGraphs">
+          <Graph1 className="graph1"></Graph1>
+        </div>
       </div>
     );
   }

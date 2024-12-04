@@ -1,7 +1,7 @@
 import { Component } from "react";
 import * as d3 from "d3";
 
-class Streamgraph extends Component {
+class Graph1 extends Component {
   state = {
     data: [],
   };
@@ -36,4 +36,4 @@ class Streamgraph extends Component {
   }
 }
 
-export default Streamgraph;
+export default Graph1;
