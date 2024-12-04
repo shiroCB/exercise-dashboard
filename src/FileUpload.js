@@ -42,12 +42,26 @@ class FileUpload extends Component {
       // Add object to result if it's not an empty row
       if (Object.keys(obj).length && lines[i].trim()) {
         const parsedObj = {
-          Date: new Date(obj.Date),
-          "GPT-4": parseInt(obj["GPT-4"]),
-          Gemini: parseInt(obj["Gemini"]),
-          "PaLM-2": parseInt(obj["PaLM-2"]),
-          Claude: parseInt(obj["Claude"]),
-          "LLaMA-3.1": parseInt(obj["LLaMA-3.1"]),
+          Age: parseInt(obj["Age"]),
+          "Avg BPM": parseInt(obj["Avg BPM"]),
+          BMI: parseFloat(obj["BMI"]),
+          "BPM Diff": parseInt(obj["BPM Diff"]),
+          "Calories Burned": parseInt(obj["Calories Burned"]),
+          "Experience Level": parseInt(obj["Experience Level"]),
+          "Fat Percentage": parseFloat(obj["Fat Percentage"]),
+          Gender: obj["Gender"],
+          "Height (m)": parseInt(obj["Height (m)"]),
+          "Max BPM": parseInt(obj["Max BPM"]),
+          "Resting BPM": parseInt(obj["Resting BPM"]),
+          "Session Duration (hours)": parseFloat(
+            obj["Session Duration (hours)"]
+          ),
+          "Water Intake (liters)": parseFloat(obj["Water Intake (liters)"]),
+          "Weight (kg)": parseFloat(obj["Weight (kg)"]),
+          "Workout Frequency (days/week)": parseInt(
+            obj["Workout Frequency (days/week)"]
+          ),
+          "Workout Type": obj["Workout Type"],
         };
         result.push(parsedObj);
       }
