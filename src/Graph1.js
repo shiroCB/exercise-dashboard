@@ -1,17 +1,20 @@
 import { Component } from "react";
+import "./Graph1.css";
 import * as d3 from "d3";
 
 class Graph1 extends Component {
-  state = {
-    data: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   componentDidMount() {
-    this.setState({ ...this.state });
+    this.setState({ data: this.props.data });
   }
 
   componentDidUpdate() {
     var data = this.state.data;
+    console.log(data);
 
     var margin = { top: 30, bot: 30, left: 40, right: 40 };
     var w = 600 - margin.left - margin.right;
@@ -27,7 +30,7 @@ class Graph1 extends Component {
 
   render() {
     return (
-      <div>
+      <div className="graph1">
         <svg className="graphContainer">
           <g className="g1"></g>
         </svg>

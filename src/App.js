@@ -18507,7 +18507,7 @@ class App extends Component {
       <div>
         <FileUpload set_data={this.set_data}></FileUpload>
         <div className="allGraphs">
-          <Graph1 className="graph1"></Graph1>
+          <Graph1 className="graph1" data={this.state.data}></Graph1>
         </div>
       </div>
     );

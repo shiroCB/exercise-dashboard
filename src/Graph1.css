@@ -1,0 +1,12 @@
+.graph1 {
+  outline: auto;
+  margin: auto;
+}
+
+.graphContainer {
+  outline: auto;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
