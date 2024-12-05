@@ -4,7 +4,9 @@ import * as d3 from "d3";
 class Graph3 extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      frequency: "All", 
+    };
   }
 
   componentDidMount() {
@@ -17,24 +19,34 @@ class Graph3 extends Component {
 
   renderChart() {
     const { csv_data } = this.props;
+    const { frequency } = this.state;
+
+    let filteredData = "";
+    if (frequency !== "All") {
+      filteredData = csv_data.filter((d) => {
+        return (d["Workout Frequency (days/week)"] === parseInt(frequency));
+      });
+    } else {
+      filteredData = csv_data;
+    }
     const margin = { top: 50, right: 10, bottom: 50, left: 30 };
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    d3.select(".graph3").selectAll("*").remove();
+    d3.select(".chart").selectAll("*").remove();
 
     const svg = d3
-      .select(".graph3")
+      .select(".chart")
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const xData = csv_data.map(d => d["Calories Burned"]);
+    const xData = filteredData.map(d => d["Calories Burned"]);
     const xScale = d3.scaleLinear().domain([0, d3.max(xData)]).range([0, width]);
 
-    const yData = csv_data.map(d => d["Fat Percentage"]);
+    const yData = filteredData.map(d => d["Fat Percentage"]);
     const yScale = d3.scaleLinear().domain([0, d3.max(yData)]).range([height, 0]);
 
     // title
@@ -43,7 +55,8 @@ class Graph3 extends Component {
       .attr("x", width / 2)
       .attr("y", 0 - margin.top + 20) 
       .text("Calories Burned vs. Fat Percentage")
-      .style("font-size", "14px");
+      .attr("font-weight", "bold")
+      .style("font-size", "16px");
     
       // x-axis
     svg.append("g")
@@ -74,7 +87,7 @@ class Graph3 extends Component {
 
     // adding datapoints
     svg
-      .data(csv_data)
+      .data(filteredData)
       .enter()
       .each(d => {
         const color = d["Gender"] === 'Male' ? "#4FC3F7" : "#F48FB1";
@@ -127,9 +140,25 @@ class Graph3 extends Component {
   }
   
   render() {
+    const options = ["All", "2", "3", "4", "5"];
     return (
     <div className="graph3">
-
+      <div className="selectors">
+        {/* <p style={{ display: "inline" }}><b>Weight: </b></p> */}
+        <p style={{ display: "inline" }}><b>Frequency: </b></p>
+        {options.map((frequency) => (
+          <label key={frequency}>
+            <input
+              type="radio"
+              value={frequency}
+              checked={this.state.frequency === frequency}
+              onChange={e => {this.setState({frequency: e.target.value})}}
+            />
+            {frequency}
+          </label>
+        ))}
+      </div>
+      <div className="chart"></div>
     </div>);
   }
 }
