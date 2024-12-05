@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FileUpload from "./FileUpload";
 import Graph1 from "./Graph1";
+import Graph3 from "./Graph3";
 
 class App extends Component {
   constructor(props) {
@@ -18506,8 +18507,14 @@ class App extends Component {
     return (
       <div>
         <FileUpload set_data={this.set_data}></FileUpload>
-        <div className="allGraphs">
-          <Graph1 className="graph1" data={this.state.data}></Graph1>
+        <div className="allGraphs" display="flex" flex-drection="column">
+          <div>
+            <Graph1 className="graph1" data={this.state.data}></Graph1>
+          </div>
+          <div display="flex" flex-direction="row">
+            {/* <Graph2 className="graph2"></Graph2> */}
+            <Graph3 className="graph3" csv_data={this.state.data}></Graph3>
+          </div>
         </div>
       </div>
     );
