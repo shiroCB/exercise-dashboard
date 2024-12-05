@@ -11,9 +11,7 @@ class Graph1 extends Component {
   componentDidMount() {
     this.setState({ data: this.props.data });
   }
-
   componentDidUpdate() {
-    console.log(this.state.data);
     var data = this.state.data.map((d) => {
       return {
         "Workout Type": d["Workout Type"],
@@ -94,13 +92,11 @@ class Graph1 extends Component {
         exp3: groupedData.get(d).get(3).length,
       });
     });
-    console.log(arrCounts);
 
     const stack = d3.stack().keys(expKeys)(arrCounts);
-    console.log(stack);
 
     container
-      .selectAll("myBars")
+      .selectAll(".expLevel")
       .data(stack)
       .join("g")
       .attr("class", "expLevel")
@@ -114,13 +110,6 @@ class Graph1 extends Component {
       .attr("x", (d) => x_scale(d[0]))
       .attr("height", y_scale.bandwidth())
       .attr("width", (d) => x_scale(d[1] - d[0]));
-
-    // .append("rect")
-    // .attr("class", "bar")
-    // .style("fill", (d) => color(d))
-    // .attr("y", (d) => y_scale(d.data.workoutType))
-    // .attr("height", y_scale.bandwidth())
-    // .attr("width", 500);
   }
 
   render() {
