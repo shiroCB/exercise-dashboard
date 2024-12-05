@@ -13,6 +13,7 @@ class Graph1 extends Component {
   }
 
   componentDidUpdate() {
+    console.log(this.state.data);
     var data = this.state.data.map((d) => {
       return {
         "Workout Type": d["Workout Type"],
@@ -20,7 +21,6 @@ class Graph1 extends Component {
         "Water Intake (liters)": d["Water Intake (liters)"],
       };
     });
-    console.log(data);
 
     var margin = { top: 30, bot: 30, left: 50, right: 50 };
     var w = 1000 - margin.left - margin.right;
@@ -33,28 +33,20 @@ class Graph1 extends Component {
       .select(".g1")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // y-axis (labels)
+    /**
+     * y-axis
+     */
     var workoutTypeCount = {};
     data.map((d) => {
       workoutTypeCount[d["Workout Type"]] =
         workoutTypeCount[d["Workout Type"]] + 1 || 1;
     });
-    console.log(workoutTypeCount);
-
-    // experimental. groups first by workot type, then by expreriene level
-    const testTypes = d3.groups(
-      data,
-      (d) => d["Workout Type"],
-      (d) => d["Experience Level"]
-    );
-    console.log(testTypes);
-
     const workoutTypes = Object.keys(workoutTypeCount);
     const y_scale = d3
       .scaleBand()
       .domain(workoutTypes)
       .range([0, h])
-      .padding(0.2);
+      .padding(0.3);
     container
       .selectAll(".y_axis")
       .data([0])
@@ -62,7 +54,9 @@ class Graph1 extends Component {
       .attr("class", "y_axis")
       .call(d3.axisLeft(y_scale));
 
-    // x-axis (count)
+    /**
+     * x-axis
+     */
     const x_scale = d3
       .scaleLinear()
       .domain([0, d3.max(Object.values(workoutTypeCount))])
@@ -76,8 +70,57 @@ class Graph1 extends Component {
       .attr("transform", `translate(0, ${h})`)
       .call(d3.axisBottom(x_scale));
 
-    // actual bars
-    container.selectAll("rect").data(testTypes).join("rect").attr('x', d=>x_scale())
+    /**
+     * Draw the bars
+     */
+    const expKeys = ["exp1", "exp2", "exp3"];
+    const color = d3
+      .scaleOrdinal()
+      .domain(expKeys)
+      .range(d3[`schemeTableau10`]);
+
+    const groupedData = d3.group(
+      data,
+      (d) => d["Workout Type"],
+      (d) => d["Experience Level"]
+    );
+
+    const arrCounts = [];
+    workoutTypes.map((d) => {
+      arrCounts.push({
+        workoutType: d,
+        exp1: groupedData.get(d).get(1).length,
+        exp2: groupedData.get(d).get(2).length,
+        exp3: groupedData.get(d).get(3).length,
+      });
+    });
+    console.log(arrCounts);
+
+    const stack = d3.stack().keys(expKeys)(arrCounts);
+    console.log(stack);
+
+    container
+      .selectAll("myBars")
+      .data(stack)
+      .join("g")
+      .attr("class", "expLevel")
+      .attr("fill", (d) => color(d.key))
+
+      .selectAll(".subBar")
+      .data((D) => D.map((d) => ((d.key = D.key), d)))
+      .join("rect")
+      .attr("class", "subBar")
+      .attr("y", (d) => y_scale(d.data.workoutType))
+      .attr("x", (d) => x_scale(d[0]))
+      .attr("height", y_scale.bandwidth())
+      .attr("width", (d) => x_scale(d[1] - d[0]));
+
+    // .append("rect")
+    // .attr("class", "bar")
+    // .style("fill", (d) => color(d))
+    // .attr("y", (d) => y_scale(d.data.workoutType))
+    // .attr("height", y_scale.bandwidth())
+    // .attr("width", 500);
   }
 
   render() {
