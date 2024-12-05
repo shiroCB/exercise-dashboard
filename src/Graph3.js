@@ -64,6 +64,40 @@ class Graph3 extends Component {
       .text("Fat Percentage")
       .style("font-size", "14px");
 
+    // adding datapoints
+    svg
+      .data(csv_data)
+      .enter()
+      .each(d => {
+        const color = d["Gender"] === 'Male' ? "#4FC3F7" : "#F48FB1";
+        switch (d["Workout Frequency (days/week)"]) {
+          case 2:
+            svg
+              .append("circle")
+              .attr("cx", xScale(d["Calories Burned"]))
+              .attr("cy", yScale(d["Fat Percentage"]))
+              .attr("r", 5)
+              .attr("fill", "none")
+              .attr("stroke", color);
+            break;
+          case 3:
+            svg
+              .append("rect")
+              .attr("x", xScale(d["Calories Burned"]) - 5)
+              .attr("y", yScale(d["Fat Percentage"]) - 5) 
+              .attr("width", 10)
+              .attr("height", 10)
+              .attr("fill", "none")
+              .attr("stroke", color);
+            break;
+          case 4:
+            // plus has to be implemented
+            break;
+          case 5:
+            // x has to be implemented
+            break;
+        }
+      });
   }
   
   render() {
