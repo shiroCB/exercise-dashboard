@@ -37,7 +37,15 @@ class Graph3 extends Component {
     const yData = csv_data.map(d => d["Fat Percentage"]);
     const yScale = d3.scaleLinear().domain([0, d3.max(yData)]).range([height, 0]);
 
-    // x-axis
+    // title
+    svg.append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", width / 2)
+      .attr("y", 0 - margin.top + 20) 
+      .text("Calories Burned vs. Fat Percentage")
+      .style("font-size", "14px");
+    
+      // x-axis
     svg.append("g")
       .call(d3.axisBottom(xScale))
       .attr("transform", `translate(${margin.left},${height})`);
