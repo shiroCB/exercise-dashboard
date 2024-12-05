@@ -91,10 +91,28 @@ class Graph3 extends Component {
               .attr("stroke", color);
             break;
           case 4:
-            // plus has to be implemented
+            svg
+              .append("text")
+              .attr("x", xScale(d["Calories Burned"]))
+              .attr("y", yScale(d["Fat Percentage"]))
+              .attr("font-size", "20px") 
+              .attr("font-weight", "bold")
+              .attr("text-anchor", "middle") 
+              .attr("dy", ".35em") 
+              .text("+")
+              .attr("fill", color); 
             break;
           case 5:
-            // x has to be implemented
+            svg
+              .append("text")
+              .attr("x", xScale(d["Calories Burned"]))
+              .attr("y", yScale(d["Fat Percentage"]))
+              .attr("font-family", "Verdana, sans-serif")
+              .attr("font-size", "18px") 
+              .attr("text-anchor", "middle") 
+              .attr("dy", ".35em") 
+              .text("x")
+              .attr("fill", color); 
             break;
         }
       });
