@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/exercise-dashboard/static/css/main.c350ab37.css",
+    "main.js": "/exercise-dashboard/static/js/main.0f8cc361.js",
+    "index.html": "/exercise-dashboard/index.html",
+    "main.c350ab37.css.map": "/exercise-dashboard/static/css/main.c350ab37.css.map",
+    "main.0f8cc361.js.map": "/exercise-dashboard/static/js/main.0f8cc361.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c350ab37.css",
+    "static/js/main.0f8cc361.js"
+  ]
+}
