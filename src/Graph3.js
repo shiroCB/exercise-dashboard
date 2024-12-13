@@ -5,6 +5,8 @@ class Graph3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      minWeight: 0,
+      maxWeight: 129.90,
       frequency: "All", 
     };
   }
@@ -19,16 +21,23 @@ class Graph3 extends Component {
 
   renderChart() {
     const { csv_data } = this.props;
-    const { frequency } = this.state;
+    const { minWeight, maxWeight, frequency } = this.state;
 
-    let filteredData = "";
+    let filteredData = csv_data;
+    // filter out data based on workout frequency
     if (frequency !== "All") {
-      filteredData = csv_data.filter((d) => {
+      filteredData = filteredData.filter((d) => {
         return (d["Workout Frequency (days/week)"] === parseInt(frequency));
       });
-    } else {
-      filteredData = csv_data;
     }
+
+    // filter out data based on weight
+    if (minWeight > 0 || maxWeight < 129.90) {
+      filteredData = filteredData.filter((d) => {
+        return (d["Weight (kg)"] >= minWeight && d["Weight (kg)"] <= maxWeight);
+      });
+    }
+
     const margin = { top: 50, right: 10, bottom: 50, left: 30 };
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
@@ -135,8 +144,110 @@ class Graph3 extends Component {
               .text("x")
               .attr("fill", color); 
             break;
+          default:
+            break;
         }
       });
+    
+    // adding legend
+    const legend = d3
+      .select(".chart")
+      .append("svg")
+      .attr("width", 200)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    legend.append("text")
+      .attr("x", -10)
+      .attr("y", -5)
+      .attr("font-size", "16px") 
+      .attr("dy", ".35em") 
+      .text("Workout Frequency")
+
+    legend.append("circle")
+      .attr("cx", 0)
+      .attr("cy", 15)
+      .attr("r", 5)
+      .attr("fill", "none")
+      .attr("stroke", "black");
+    
+    legend.append("rect")
+      .attr("x", -5)
+      .attr("y", 30)
+      .attr("width", 10)
+      .attr("height", 10)
+      .attr("fill", "none")
+      .attr("stroke", "black");
+
+    legend.append("text")
+      .attr("x", 0)
+      .attr("y", 53.25)
+      .attr("font-size", "20px") 
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "middle") 
+      .attr("dy", ".35em") 
+      .text("+")
+      .attr("fill", "black"); 
+
+    legend.append("text")
+      .attr("x", 0)
+      .attr("y", 71.25)
+      .attr("font-family", "Verdana, sans-serif")
+      .attr("font-size", "18px") 
+      .attr("text-anchor", "middle") 
+      .attr("dy", ".35em") 
+      .text("x")
+      .attr("fill", "black"); 
+
+    legend.append("text")
+      .attr("x", 15)
+      .attr("y", 20)
+      .text("2 days/week")
+
+    legend.append("text")
+      .attr("x", 15)
+      .attr("y", 40)
+      .text("3 days/week")
+
+    legend.append("text")
+      .attr("x", 15)
+      .attr("y", 58.5)
+      .text("4 days/week")
+
+    legend.append("text")
+      .attr("x", 15)
+      .attr("y", 77.5)
+      .text("5 days/week")
+
+    legend.append("text")
+      .attr("x", -10)
+      .attr("y", 115)
+      .attr("font-size", "16px") 
+      .attr("dy", ".35em") 
+      .text("Gender")
+
+    legend.append("circle")
+      .attr("cx", 0)
+      .attr("cy", 135)
+      .attr("r", 5)
+      .attr("fill", "#4FC3F7");
+
+    legend.append("circle")
+      .attr("cx", 0)
+      .attr("cy", 155)
+      .attr("r", 5)
+      .attr("fill", "#F48FB1");
+    
+    legend.append("text")
+      .attr("x", 15)
+      .attr("y", 140)
+      .text("Male")
+
+    legend.append("text")
+      .attr("x", 15)
+      .attr("y", 160)
+      .text("Female")
   }
   
   render() {
@@ -146,17 +257,19 @@ class Graph3 extends Component {
       <div className="selectors">
         {/* <p style={{ display: "inline" }}><b>Weight: </b></p> */}
         <p style={{ display: "inline" }}><b>Frequency: </b></p>
-        {options.map((frequency) => (
-          <label key={frequency}>
-            <input
-              type="radio"
-              value={frequency}
-              checked={this.state.frequency === frequency}
-              onChange={e => {this.setState({frequency: e.target.value})}}
-            />
-            {frequency}
-          </label>
-        ))}
+        {options.map((frequency) => {
+          return (
+            <label key={frequency}>
+              <input
+                type="radio"
+                value={frequency}
+                checked={this.state.frequency === frequency}
+                onChange={e => {this.setState({frequency: e.target.value})}}
+              />
+              {frequency}
+            </label>
+          );
+        })}
       </div>
       <div className="chart"></div>
     </div>);
