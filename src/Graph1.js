@@ -21,7 +21,7 @@ class Graph1 extends Component {
     });
 
     var margin = { top: 40, bot: 70, left: 50, right: 50 };
-    var w = 1000 - margin.left - margin.right;
+    var w = 1200 - margin.left - margin.right;
     var h = 400 - margin.top - margin.bot;
 
     var container = d3
@@ -112,6 +112,9 @@ class Graph1 extends Component {
         exp1: groupedData.get(d).get(1).length,
         exp2: groupedData.get(d).get(2).length,
         exp3: groupedData.get(d).get(3).length,
+        exp1data: groupedData.get(d).get(1),
+        exp2data: groupedData.get(d).get(2),
+        exp3data: groupedData.get(d).get(3),
       });
     });
 
@@ -122,7 +125,10 @@ class Graph1 extends Component {
       .data(stack)
       .join("g")
       .attr("class", "expLevel")
-      .attr("fill", (d) => color(d.key));
+      .attr("fill", (d) => {
+        // console.log(d);
+        return color(d.key);
+      });
 
     var bars = bar_groups
       .selectAll(".subBar")
@@ -137,17 +143,44 @@ class Graph1 extends Component {
       .attr("height", y_scale.bandwidth())
       .attr("width", (d) => x_scale(d[1] - d[0]));
 
+    /**
+     * Labels that go over each section of the bars
+     */
+    const totalCount = data.length;
     bars
       .join("text")
-      .text((d) => d.data.workoutType)
+      .text((d) => {
+        const subL = d[1] - d[0];
+        return `${((100 * subL) / totalCount).toFixed(2)}% (${subL})`;
+      })
       .style("text-anchor", "middle")
       .style("fill", "black")
       .attr("x", (d) => x_scale((d[0] + d[1]) / 2))
-      .attr("y", (d) => y_scale(d.data.workoutType) + 30)
-      .attr("hey", (d) => {
-        console.log(d);
-        return d[0];
-      });
+      .attr("y", (d) => y_scale(d.data.workoutType) + 20)
+      .style("font-size", "12px");
+
+    bars
+      .join("text")
+      .text((d) => {
+        const subL = d[1] - d[0];
+        var expLevel =
+          subL === d.data.exp1
+            ? "exp1data"
+            : subL === d.data.exp2
+              ? "exp2data"
+              : subL === d.data.exp3
+                ? "exp3data"
+                : 0;
+        var liters = d.data[expLevel].map(
+          (val) => val["Water Intake (liters)"]
+        );
+        return `Water Intake ${d3.mean(liters).toFixed(2)} Liters`;
+      })
+      .style("text-anchor", "middle")
+      .style("fill", "black")
+      .attr("x", (d) => x_scale((d[0] + d[1]) / 2))
+      .attr("y", (d) => y_scale(d.data.workoutType) + 37)
+      .style("font-size", "12px");
   }
 
   render() {
