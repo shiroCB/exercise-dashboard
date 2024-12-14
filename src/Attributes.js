@@ -17,8 +17,6 @@ class Attributes extends Component {
   }
 
   renderAttributes() {
-    const { csv_data } = this.props;
-    
     const categorical = ["Gender", "Workout Type"]
     const numerical = ["Age", 
                        "BPM Diff", 
@@ -30,22 +28,6 @@ class Attributes extends Component {
                        "Water Intake (liters)", 
                        "Weight (kg)", 
                        "Workout Frequency (days/week)"]
-
-    const categoricalData = csv_data.map(row => {
-      let data = {};
-      categorical.forEach(category => {
-        data[category] = row[category];
-      });
-      return data;
-    });
-
-    const numericalData = csv_data.map(row => {
-      let data = {};
-      numerical.forEach(number => {
-        data[number] = row[number];
-      });
-      return data;
-    });
 
     d3.select(".attributes").selectAll("*").remove();
 
@@ -97,12 +79,27 @@ class Attributes extends Component {
           .style("position", "absolute")
           .style("top", `${event.clientY + 10}px`)
           .style("left", `${event.clientX + 10}px`)
+
+        this.generateBarChart(event.target.id);
       })
       .on("mouseout", () => {
         d3.select(".tooltip").style("visibility", "hidden");
       });
   }
 
+  generateBarChart(attribute) {
+    const { csv_data } = this.props;
+
+    // if categorical do something else do something else
+    if (attribute === "Gender" || attribute === "Workout Type") {
+
+    } else {
+
+    }
+    console.log(attribute);
+    console.log(csv_data);
+  }
+  
   render() {
     return (
       <>
