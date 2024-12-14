@@ -12,7 +12,6 @@ class Graph1 extends Component {
     this.setState({ data: this.props.data });
   }
   componentDidUpdate() {
-    console.log(this.state.data);
     var data = this.state.data.map((d) => {
       return {
         "Workout Type": d["Workout Type"],
@@ -127,7 +126,6 @@ class Graph1 extends Component {
       .join("g")
       .attr("class", "expLevel")
       .attr("fill", (d) => {
-        // console.log(d);
         return color(d.key);
       });
 
