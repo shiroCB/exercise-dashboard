@@ -64,7 +64,7 @@ class Attributes extends Component {
         .style("font-size", "14pt")
 
       if (index < categorical.length - 1) {
-        attributes.append("div").text(", ");
+        attributes.append("text").text(", ");
       }
     });
 
@@ -81,7 +81,7 @@ class Attributes extends Component {
         .style("font-size", "14pt")
 
       if (index < numerical.length - 1) {
-        attributes.append("div").text(", ");
+        attributes.append("text").text(", ");
       }
     });
   }
