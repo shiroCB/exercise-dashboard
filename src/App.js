@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import "./App.css"
 import FileUpload from "./FileUpload";
+import Attributes from "./Attributes";
 import Graph1 from "./Graph1";
 import Graph3 from "./Graph3";
 
@@ -18507,6 +18509,9 @@ class App extends Component {
     return (
       <div>
         <FileUpload set_data={this.set_data}></FileUpload>
+        <div className="attr">
+          <Attributes csv_data={this.state.data}></Attributes>
+        </div>
         <div className="allGraphs" display="flex" flex-drection="column">
           <div>
             <Graph1 className="graph1" data={this.state.data}></Graph1>
