@@ -20,8 +20,8 @@ class Graph1 extends Component {
       };
     });
 
-    var margin = { top: 30, bot: 100, left: 50, right: 50 };
-    var w = 1000 - margin.left - margin.right;
+    var margin = { top: 40, bot: 70, left: 50, right: 50 };
+    var w = 1200 - margin.left - margin.right;
     var h = 400 - margin.top - margin.bot;
 
     var container = d3
@@ -30,6 +30,24 @@ class Graph1 extends Component {
       .attr("height", h + margin.top + margin.bot)
       .select(".g1")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    /**
+     * Title and axis labels
+     */
+    container
+      .selectAll(".title")
+      .data([0])
+      .join("text")
+      .text("Workout Types and Experience levels")
+      .attr("font-size", "20px")
+      .attr("font-weight", "bold");
+
+    container
+      .selectAll(".x-label")
+      .data([0])
+      .join("text")
+      .text("Count of Workout Type")
+      .attr("transform", `translate(${w / 2 - 75}, ${h + 45})`);
 
     /**
      * y-axis
@@ -50,7 +68,9 @@ class Graph1 extends Component {
       .data([0])
       .join("g")
       .attr("class", "y_axis")
-      .call(d3.axisLeft(y_scale));
+      .call(d3.axisLeft(y_scale))
+      .selectAll("path, line")
+      .remove();
 
     /**
      * x-axis
@@ -67,7 +87,7 @@ class Graph1 extends Component {
       .attr("class", "x_axis")
       .attr("transform", `translate(0, ${h})`)
       .call(d3.axisBottom(x_scale))
-      .selectAll("path, line")
+      .selectAll("path")
       .remove();
 
     /**
@@ -82,7 +102,7 @@ class Graph1 extends Component {
     const groupedData = d3.group(
       data,
       (d) => d["Workout Type"],
-      (d) => d["Experience Level"],
+      (d) => d["Experience Level"]
     );
 
     const arrCounts = [];
@@ -112,8 +132,6 @@ class Graph1 extends Component {
       .attr("x", (d) => x_scale(d[0]))
       .attr("height", y_scale.bandwidth())
       .attr("width", (d) => x_scale(d[1] - d[0]));
-
-    // container.selectAll('path, line').remove()
   }
 
   render() {

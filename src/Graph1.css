@@ -1,9 +1,13 @@
+*{
+font-family:Arial, Helvetica, sans-serif
+}
+
 .graph1 {
-  outline: auto;
+  /* outline: auto; */
 }
 
 .graphContainer {
-  outline: auto;
+  /* outline: auto; */
   margin: auto;
   display: flex;
   flex-direction: row;
