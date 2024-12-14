@@ -52,7 +52,7 @@ class Attributes extends Component {
     const attributes = d3.select(".attributes")
 
     attributes
-      .append("text")
+      .append("span")
       .html("<strong>Categorical Attributes: </strong>")
       .style("font-size", "14pt")
 
@@ -64,12 +64,12 @@ class Attributes extends Component {
         .style("font-size", "14pt")
 
       if (index < categorical.length - 1) {
-        attributes.append("text").text(", ");
+        attributes.append("span").text(", ");
       }
     });
 
     attributes
-      .append("text")
+      .append("span")
       .html("<br/><strong>Numerical Attributes: </strong>")
       .style("font-size", "14pt")
     
@@ -81,14 +81,34 @@ class Attributes extends Component {
         .style("font-size", "14pt")
 
       if (index < numerical.length - 1) {
-        attributes.append("text").text(", ");
+        attributes.append("span").text(", ");
       }
     });
+
+    attributes
+      .selectAll("text")
+      .on("mousemove", (event, d) => {
+        d3.select(".tooltip")
+          .style("width", "300px")
+          .style("height", "300px")
+          .style("background-color", "white")
+          .style("border", "2px solid black")
+          .style("visibility", "visible")
+          .style("position", "absolute")
+          .style("top", `${event.clientY + 10}px`)
+          .style("left", `${event.clientX + 10}px`)
+      })
+      .on("mouseout", () => {
+        d3.select(".tooltip").style("visibility", "hidden");
+      });
   }
 
   render() {
     return (
-      <div className="attributes"></div>
+      <>
+        <div className="attributes"></div>
+        <div className="tooltip"></div>
+      </>
     );
   }
 }
