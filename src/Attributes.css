@@ -1,0 +1,7 @@
+.attributes {
+  display: inline;
+  flex-direction: column;
+  width: 800px;
+  height: 100px;
+  justify-content: center;
+}
