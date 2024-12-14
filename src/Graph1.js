@@ -21,7 +21,7 @@ class Graph1 extends Component {
     });
 
     var margin = { top: 40, bot: 70, left: 50, right: 50 };
-    var w = 1200 - margin.left - margin.right;
+    var w = 1000 - margin.left - margin.right;
     var h = 400 - margin.top - margin.bot;
 
     var container = d3
@@ -117,21 +117,37 @@ class Graph1 extends Component {
 
     const stack = d3.stack().keys(expKeys)(arrCounts);
 
-    container
+    var bar_groups = container
       .selectAll(".expLevel")
       .data(stack)
       .join("g")
       .attr("class", "expLevel")
-      .attr("fill", (d) => color(d.key))
+      .attr("fill", (d) => color(d.key));
 
+    var bars = bar_groups
       .selectAll(".subBar")
-      .data((D) => D.map((d) => ((d.key = D.key), d)))
+      .enter()
+      .data((d) => d);
+
+    bars
       .join("rect")
       .attr("class", "subBar")
       .attr("y", (d) => y_scale(d.data.workoutType))
       .attr("x", (d) => x_scale(d[0]))
       .attr("height", y_scale.bandwidth())
       .attr("width", (d) => x_scale(d[1] - d[0]));
+
+    bars
+      .join("text")
+      .text((d) => d.data.workoutType)
+      .style("text-anchor", "middle")
+      .style("fill", "black")
+      .attr("x", (d) => x_scale((d[0] + d[1]) / 2))
+      .attr("y", (d) => y_scale(d.data.workoutType) + 30)
+      .attr("hey", (d) => {
+        console.log(d);
+        return d[0];
+      });
   }
 
   render() {
@@ -140,6 +156,34 @@ class Graph1 extends Component {
         <svg className="graphContainer">
           <g className="g1"></g>
         </svg>
+
+        <div className="legend">
+          <div>Experience Level</div>
+
+          <div className="legendItem">
+            <div
+              className="box"
+              style={{ backgroundColor: "#4e79a7", margin: 3 }}
+            ></div>
+            Level 1
+          </div>
+
+          <div className="legendItem">
+            <div
+              className="box"
+              style={{ backgroundColor: "#f28e2c", margin: 3 }}
+            ></div>
+            Level 2
+          </div>
+
+          <div className="legendItem">
+            <div
+              className="box"
+              style={{ backgroundColor: "#e15759", margin: 3 }}
+            ></div>
+            Level 3
+          </div>
+        </div>
       </div>
     );
   }
