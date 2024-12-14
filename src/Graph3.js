@@ -1,11 +1,13 @@
 import { Component } from "react";
 import * as d3 from "d3";
+import "./Graph3.css";
+import "./range-slider"
 
 class Graph3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      minWeight: 0,
+      minWeight: 40,
       maxWeight: 129.90,
       frequency: "All", 
     };
@@ -162,6 +164,7 @@ class Graph3 extends Component {
       .attr("x", -10)
       .attr("y", -5)
       .attr("font-size", "16px") 
+      .attr("font-weight", "bold")
       .attr("dy", ".35em") 
       .text("Workout Frequency")
 
@@ -224,6 +227,7 @@ class Graph3 extends Component {
       .attr("x", -10)
       .attr("y", 115)
       .attr("font-size", "16px") 
+      .attr("font-weight", "bold")
       .attr("dy", ".35em") 
       .text("Gender")
 
@@ -254,22 +258,42 @@ class Graph3 extends Component {
     const options = ["All", "2", "3", "4", "5"];
     return (
     <div className="graph3">
-      <div className="selectors">
-        {/* <p style={{ display: "inline" }}><b>Weight: </b></p> */}
-        <p style={{ display: "inline" }}><b>Frequency: </b></p>
-        {options.map((frequency) => {
-          return (
-            <label key={frequency}>
-              <input
-                type="radio"
-                value={frequency}
-                checked={this.state.frequency === frequency}
-                onChange={e => {this.setState({frequency: e.target.value})}}
-              />
-              {frequency}
-            </label>
-          );
-        })}
+      <div className="selectors" display="flex" flex-direction="row">
+        <p id="weight"><b>Weight: </b></p>
+        <div className="range-slider">
+          <input 
+            type="range" 
+            min={40} 
+            max={129.90} 
+            value={this.state.minWeight} 
+            step="0.1"
+            onChange={e => {this.setState({minWeight: e.target.value})}}/>
+          <input 
+            type="range" 
+            min={40} 
+            max={129.90} 
+            step="0.1"
+            value={this.state.maxWeight} 
+            onChange={e => {this.setState({maxWeight: e.target.value})}}/>
+          <div class="rangeMin">0</div>
+          <div class="rangeMax">0</div>
+        </div>
+        <div className="frequency-selector">
+          <p id="frequency"><b>Frequency: </b></p>
+          {options.map((frequency) => {
+            return (
+              <label key={frequency}>
+                <input
+                  type="radio"
+                  value={frequency}
+                  checked={this.state.frequency === frequency}
+                  onChange={e => {this.setState({frequency: e.target.value})}}
+                />
+                {frequency}
+              </label>
+            );
+          })}
+        </div>
       </div>
       <div className="chart"></div>
     </div>);
