@@ -92,9 +92,9 @@ class Attributes extends Component {
   generateBarChart(attribute) {
     const { csv_data } = this.props;
 
-    const margin = { top: 10, right: 10, bottom: 10, left: 10 },
+    const margin = { top: 10, right: 10, bottom: 30, left: 30 },
       width = 600 - margin.left - margin.right,
-      height = 200 - margin.top - margin.bottom;
+      height = 230 - margin.top - margin.bottom;
 
     const filteredData = csv_data.map((d) => d[attribute]);
     const data = {};
@@ -125,7 +125,8 @@ class Attributes extends Component {
     const yScale = d3
       .scaleLinear()
       .range([height, 0])
-      .domain([0, d3.max(formattedData, (d) => d.Value)]);
+      .domain([0, d3.max(formattedData, (d) => d.Value)])
+      .nice();
 
     svg
       .append("g")
@@ -137,6 +138,21 @@ class Attributes extends Component {
       .attr("y", (d) => yScale(d.Value))
       .attr("height", (d) => yScale(0) - yScale(d.Value))
       .attr("width", xScale.bandwidth());
+
+    svg
+      .selectAll(".x-axis")
+      .data([0])
+      .join("g")
+      .attr("class", "x-axis")
+      .call(d3.axisBottom(xScale))
+      .attr("transform", `translate(0, ${height})`);
+
+    svg
+      .selectAll(".y-axis")
+      .data([0])
+      .join("g")
+      .attr("class", "y-axis")
+      .call(d3.axisLeft(yScale));
   }
 
   render() {
