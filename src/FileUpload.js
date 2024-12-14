@@ -50,7 +50,7 @@ class FileUpload extends Component {
           "Experience Level": parseInt(obj["Experience Level"]),
           "Fat Percentage": parseFloat(obj["Fat Percentage"]),
           Gender: obj["Gender"],
-          "Height (m)": parseInt(obj["Height (m)"]),
+          "Height (m)": parseFloat(obj["Height (m)"]),
           "Max BPM": parseInt(obj["Max BPM"]),
           "Resting BPM": parseInt(obj["Resting BPM"]),
           "Session Duration (hours)": parseFloat(
