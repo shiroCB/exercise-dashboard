@@ -1,12 +1,32 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .graph1 {
-  outline: auto;
-  margin: auto;
+  /* outline: auto; */
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
 }
 
 .graphContainer {
-  outline: auto;
-  margin: auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.legend {
+  margin-top: 40px;
+}
+
+.legendItem {
+  margin: 4px;
+  display: flex;
+  flex-direction: row;
+}
+
+.box {
+  height: 13px;
+  width: 13px;
+  margin: 5px;
 }

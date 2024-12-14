@@ -1,15 +1,15 @@
 import { Component } from "react";
 import * as d3 from "d3";
 import "./Graph3.css";
-import "./range-slider"
+import "./range-slider";
 
 class Graph3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
       minWeight: 40,
-      maxWeight: 129.90,
-      frequency: "All", 
+      maxWeight: 129.9,
+      frequency: "All",
     };
   }
 
@@ -29,14 +29,14 @@ class Graph3 extends Component {
     // filter out data based on workout frequency
     if (frequency !== "All") {
       filteredData = filteredData.filter((d) => {
-        return (d["Workout Frequency (days/week)"] === parseInt(frequency));
+        return d["Workout Frequency (days/week)"] === parseInt(frequency);
       });
     }
 
     // filter out data based on weight
-    if (minWeight > 0 || maxWeight < 129.90) {
+    if (minWeight > 0 || maxWeight < 129.9) {
       filteredData = filteredData.filter((d) => {
-        return (d["Weight (kg)"] >= minWeight && d["Weight (kg)"] <= maxWeight);
+        return d["Weight (kg)"] >= minWeight && d["Weight (kg)"] <= maxWeight;
       });
     }
 
@@ -54,44 +54,55 @@ class Graph3 extends Component {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const xData = filteredData.map(d => d["Calories Burned"]);
-    const xScale = d3.scaleLinear().domain([0, d3.max(xData)]).range([0, width]);
+    const xData = filteredData.map((d) => d["Calories Burned"]);
+    const xScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(xData)])
+      .range([0, width]);
 
-    const yData = filteredData.map(d => d["Fat Percentage"]);
-    const yScale = d3.scaleLinear().domain([0, d3.max(yData)]).range([height, 0]);
+    const yData = filteredData.map((d) => d["Fat Percentage"]);
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(yData)])
+      .range([height, 0]);
 
     // title
-    svg.append("text")
+    svg
+      .append("text")
       .attr("text-anchor", "middle")
       .attr("x", width / 2)
-      .attr("y", 0 - margin.top + 20) 
+      .attr("y", 0 - margin.top + 20)
       .text("Calories Burned vs. Fat Percentage")
       .attr("font-weight", "bold")
       .style("font-size", "16px");
-    
-      // x-axis
-    svg.append("g")
+
+    // x-axis
+    svg
+      .append("g")
       .call(d3.axisBottom(xScale))
       .attr("transform", `translate(${margin.left},${height})`);
 
     // x-axis label
-    svg.append("text")
+    svg
+      .append("text")
       .attr("text-anchor", "middle")
       .attr("x", width / 2)
-      .attr("y", height + margin.bottom - 10) 
+      .attr("y", height + margin.bottom - 10)
       .text("Calories Burned")
       .style("font-size", "14px");
-    
+
     // y-axis
-    svg.append("g")
+    svg
+      .append("g")
       .call(d3.axisLeft(yScale))
       .attr("transform", `translate(${margin.left}, 0)`);
-      
+
     // y-axis label
-    svg.append("text")
+    svg
+      .append("text")
       .attr("text-anchor", "middle")
-      .attr("transform", "rotate(-90)") 
-      .attr("x", -height / 2) 
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
       .attr("y", -margin.left + 20)
       .text("Fat Percentage")
       .style("font-size", "14px");
@@ -100,8 +111,8 @@ class Graph3 extends Component {
     svg
       .data(filteredData)
       .enter()
-      .each(d => {
-        const color = d["Gender"] === 'Male' ? "#4FC3F7" : "#F48FB1";
+      .each((d) => {
+        const color = d["Gender"] === "Male" ? "#4FC3F7" : "#F48FB1";
         switch (d["Workout Frequency (days/week)"]) {
           case 2:
             svg
@@ -116,7 +127,7 @@ class Graph3 extends Component {
             svg
               .append("rect")
               .attr("x", xScale(d["Calories Burned"]) - 5)
-              .attr("y", yScale(d["Fat Percentage"]) - 5) 
+              .attr("y", yScale(d["Fat Percentage"]) - 5)
               .attr("width", 10)
               .attr("height", 10)
               .attr("fill", "none")
@@ -127,12 +138,12 @@ class Graph3 extends Component {
               .append("text")
               .attr("x", xScale(d["Calories Burned"]))
               .attr("y", yScale(d["Fat Percentage"]))
-              .attr("font-size", "20px") 
+              .attr("font-size", "20px")
               .attr("font-weight", "bold")
-              .attr("text-anchor", "middle") 
-              .attr("dy", ".35em") 
+              .attr("text-anchor", "middle")
+              .attr("dy", ".35em")
               .text("+")
-              .attr("fill", color); 
+              .attr("fill", color);
             break;
           case 5:
             svg
@@ -140,17 +151,17 @@ class Graph3 extends Component {
               .attr("x", xScale(d["Calories Burned"]))
               .attr("y", yScale(d["Fat Percentage"]))
               .attr("font-family", "Verdana, sans-serif")
-              .attr("font-size", "18px") 
-              .attr("text-anchor", "middle") 
-              .attr("dy", ".35em") 
+              .attr("font-size", "18px")
+              .attr("text-anchor", "middle")
+              .attr("dy", ".35em")
               .text("x")
-              .attr("fill", color); 
+              .attr("fill", color);
             break;
           default:
             break;
         }
       });
-    
+
     // adding legend
     const legend = d3
       .select(".chart")
@@ -160,22 +171,25 @@ class Graph3 extends Component {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    legend.append("text")
+    legend
+      .append("text")
       .attr("x", -10)
       .attr("y", -5)
-      .attr("font-size", "16px") 
+      .attr("font-size", "16px")
       .attr("font-weight", "bold")
-      .attr("dy", ".35em") 
-      .text("Workout Frequency")
+      .attr("dy", ".35em")
+      .text("Workout Frequency");
 
-    legend.append("circle")
+    legend
+      .append("circle")
       .attr("cx", 0)
       .attr("cy", 15)
       .attr("r", 5)
       .attr("fill", "none")
       .attr("stroke", "black");
-    
-    legend.append("rect")
+
+    legend
+      .append("rect")
       .attr("x", -5)
       .attr("y", 30)
       .attr("width", 10)
@@ -183,120 +197,120 @@ class Graph3 extends Component {
       .attr("fill", "none")
       .attr("stroke", "black");
 
-    legend.append("text")
+    legend
+      .append("text")
       .attr("x", 0)
       .attr("y", 53.25)
-      .attr("font-size", "20px") 
+      .attr("font-size", "20px")
       .attr("font-weight", "bold")
-      .attr("text-anchor", "middle") 
-      .attr("dy", ".35em") 
+      .attr("text-anchor", "middle")
+      .attr("dy", ".35em")
       .text("+")
-      .attr("fill", "black"); 
+      .attr("fill", "black");
 
-    legend.append("text")
+    legend
+      .append("text")
       .attr("x", 0)
       .attr("y", 71.25)
       .attr("font-family", "Verdana, sans-serif")
-      .attr("font-size", "18px") 
-      .attr("text-anchor", "middle") 
-      .attr("dy", ".35em") 
+      .attr("font-size", "18px")
+      .attr("text-anchor", "middle")
+      .attr("dy", ".35em")
       .text("x")
-      .attr("fill", "black"); 
+      .attr("fill", "black");
 
-    legend.append("text")
-      .attr("x", 15)
-      .attr("y", 20)
-      .text("2 days/week")
+    legend.append("text").attr("x", 15).attr("y", 20).text("2 days/week");
 
-    legend.append("text")
-      .attr("x", 15)
-      .attr("y", 40)
-      .text("3 days/week")
+    legend.append("text").attr("x", 15).attr("y", 40).text("3 days/week");
 
-    legend.append("text")
-      .attr("x", 15)
-      .attr("y", 58.5)
-      .text("4 days/week")
+    legend.append("text").attr("x", 15).attr("y", 58.5).text("4 days/week");
 
-    legend.append("text")
-      .attr("x", 15)
-      .attr("y", 77.5)
-      .text("5 days/week")
+    legend.append("text").attr("x", 15).attr("y", 77.5).text("5 days/week");
 
-    legend.append("text")
+    legend
+      .append("text")
       .attr("x", -10)
       .attr("y", 115)
-      .attr("font-size", "16px") 
+      .attr("font-size", "16px")
       .attr("font-weight", "bold")
-      .attr("dy", ".35em") 
-      .text("Gender")
+      .attr("dy", ".35em")
+      .text("Gender");
 
-    legend.append("circle")
+    legend
+      .append("circle")
       .attr("cx", 0)
       .attr("cy", 135)
       .attr("r", 5)
       .attr("fill", "#4FC3F7");
 
-    legend.append("circle")
+    legend
+      .append("circle")
       .attr("cx", 0)
       .attr("cy", 155)
       .attr("r", 5)
       .attr("fill", "#F48FB1");
-    
-    legend.append("text")
-      .attr("x", 15)
-      .attr("y", 140)
-      .text("Male")
 
-    legend.append("text")
-      .attr("x", 15)
-      .attr("y", 160)
-      .text("Female")
+    legend.append("text").attr("x", 15).attr("y", 140).text("Male");
+
+    legend.append("text").attr("x", 15).attr("y", 160).text("Female");
   }
-  
+
   render() {
     const options = ["All", "2", "3", "4", "5"];
     return (
-    <div className="graph3">
-      <div className="selectors" display="flex" flex-direction="row">
-        <p id="weight"><b>Weight: </b></p>
-        <div className="range-slider">
-          <input 
-            type="range" 
-            min={40} 
-            max={129.90} 
-            value={this.state.minWeight} 
-            step="0.1"
-            onChange={e => {this.setState({minWeight: e.target.value})}}/>
-          <input 
-            type="range" 
-            min={40} 
-            max={129.90} 
-            step="0.1"
-            value={this.state.maxWeight} 
-            onChange={e => {this.setState({maxWeight: e.target.value})}}/>
-          <div class="rangeMin">0</div>
-          <div class="rangeMax">0</div>
+      <div className="graph3">
+        <div className="selectors" display="flex" flex-direction="row">
+          <p id="weight">
+            <b>Weight: </b>
+          </p>
+          <div className="range-slider">
+            <input
+              type="range"
+              min={40}
+              max={129.9}
+              value={this.state.minWeight}
+              step="0.1"
+              onChange={(e) => {
+                this.setState({ minWeight: e.target.value });
+              }}
+            />
+            <input
+              type="range"
+              min={40}
+              max={129.9}
+              step="0.1"
+              value={this.state.maxWeight}
+              onChange={(e) => {
+                this.setState({ maxWeight: e.target.value });
+              }}
+            />
+            <div class="rangeMin">0</div>
+            <div class="rangeMax">0</div>
+          </div>
+          <div className="frequency-selector">
+            <p id="frequency">
+              <b>Frequency: </b>
+            </p>
+            {options.map((frequency) => {
+              return (
+                <label key={frequency}>
+                  <input
+                    type="radio"
+                    value={frequency}
+                    checked={this.state.frequency === frequency}
+                    onChange={(e) => {
+                      this.setState({ frequency: e.target.value });
+                    }}
+                  />
+                  {frequency}
+                </label>
+              );
+            })}
+          </div>
         </div>
-        <div className="frequency-selector">
-          <p id="frequency"><b>Frequency: </b></p>
-          {options.map((frequency) => {
-            return (
-              <label key={frequency}>
-                <input
-                  type="radio"
-                  value={frequency}
-                  checked={this.state.frequency === frequency}
-                  onChange={e => {this.setState({frequency: e.target.value})}}
-                />
-                {frequency}
-              </label>
-            );
-          })}
-        </div>
+        <div className="chart"></div>
       </div>
-      <div className="chart"></div>
-    </div>);
+    );
   }
 }
 
