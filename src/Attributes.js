@@ -97,7 +97,6 @@ class Attributes extends Component {
       height = 200 - margin.top - margin.bottom;
 
     const filteredData = csv_data.map((d) => d[attribute]);
-    if (attribute === "Height (m)") console.log(filteredData);
     const data = {};
     filteredData.forEach(
       (element) => (data[element] = (data[element] || 0) + 1)
@@ -106,8 +105,6 @@ class Attributes extends Component {
       Key: key,
       Value: data[key],
     }));
-
-    console.log(formattedData);
 
     d3.select(".tooltip").selectAll("*").remove();
 
