@@ -20,7 +20,7 @@ class Graph1 extends Component {
       };
     });
 
-    var margin = { top: 30, bot: 30, left: 50, right: 50 };
+    var margin = { top: 30, bot: 100, left: 50, right: 50 };
     var w = 1000 - margin.left - margin.right;
     var h = 400 - margin.top - margin.bot;
 
@@ -66,7 +66,9 @@ class Graph1 extends Component {
       .join("g")
       .attr("class", "x_axis")
       .attr("transform", `translate(0, ${h})`)
-      .call(d3.axisBottom(x_scale));
+      .call(d3.axisBottom(x_scale))
+      .selectAll("path, line")
+      .remove();
 
     /**
      * Draw the bars
@@ -80,7 +82,7 @@ class Graph1 extends Component {
     const groupedData = d3.group(
       data,
       (d) => d["Workout Type"],
-      (d) => d["Experience Level"]
+      (d) => d["Experience Level"],
     );
 
     const arrCounts = [];
@@ -110,6 +112,8 @@ class Graph1 extends Component {
       .attr("x", (d) => x_scale(d[0]))
       .attr("height", y_scale.bandwidth())
       .attr("width", (d) => x_scale(d[1] - d[0]));
+
+    // container.selectAll('path, line').remove()
   }
 
   render() {

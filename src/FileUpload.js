@@ -54,12 +54,12 @@ class FileUpload extends Component {
           "Max BPM": parseInt(obj["Max BPM"]),
           "Resting BPM": parseInt(obj["Resting BPM"]),
           "Session Duration (hours)": parseFloat(
-            obj["Session Duration (hours)"]
+            obj["Session Duration (hours)"],
           ),
           "Water Intake (liters)": parseFloat(obj["Water Intake (liters)"]),
           "Weight (kg)": parseFloat(obj["Weight (kg)"]),
           "Workout Frequency (days/week)": parseInt(
-            obj["Workout Frequency (days/week)"]
+            obj["Workout Frequency (days/week)"],
           ),
           "Workout Type": obj["Workout Type"],
         };
