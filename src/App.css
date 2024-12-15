@@ -4,3 +4,11 @@
   align-items: center;
   width: 100%;
 }
+
+.botGraphs {
+  display: flex;
+  flex-direction: row;
+}
+.graph2, .graph3 {
+  max-width: 800px;
+}
